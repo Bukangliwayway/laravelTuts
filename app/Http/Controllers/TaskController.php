@@ -30,7 +30,13 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
-        return view('task.store');
+        $data = $request->validate(['task_description' => ['required', 'nullable'], 'task_title' => ['required', 'string']]);
+        $data['user_id'] = 1;
+        $task = Task::create($data);
+        return to_route('task.show', $task)
+            ->with('status', 'success')
+            ->with('status_color', 'green')
+            ->with('message', 'Task saved successfully');
     }
 
     /**
@@ -47,7 +53,7 @@ class TaskController extends Controller
     public function edit(Task $task)
     {
 
-        return view('task.edit');
+        return view('task.edit', ['task' => $task]);
     }
 
     /**
@@ -55,7 +61,12 @@ class TaskController extends Controller
      */
     public function update(Request $request, Task $task)
     {
-        return view('task.update');
+        $data = $request->validate(['task_description' => ['required', 'nullable'], 'task_title' => ['required', 'string']]);
+        $task->update($data);
+        return to_route('task.show', $task)
+            ->with('status', 'success')
+            ->with('status_color', 'green')
+            ->with('message', 'Task edited successfully');
     }
 
     /**
@@ -63,6 +74,10 @@ class TaskController extends Controller
      */
     public function destroy(Task $task)
     {
-        return view('task.destroy');
+        $task->delete();
+        return to_route('task.index')
+            ->with('status', 'success')
+            ->with('status_color', 'green')
+            ->with('message', 'Task Deleted successfully');
     }
 }

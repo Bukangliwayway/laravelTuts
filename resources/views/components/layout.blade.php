@@ -3,13 +3,12 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  @vite("resources/css/app.css")
+  @vite(['resources/css/app.css', 'resources/js/app.js'])
   <title>{{ $title ?? "Laravel" }}</title>
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.bunny.net" />
   <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
-  <style id="dynamic-styles"></style>
 </head>
 <div class="flex bg-gray-800 text-white top-0 py-3 flex-wrap justify-around bg-silver items-center">
   <h1 class="text-lg uppercase font-bold">LaraTask</h1>
@@ -27,6 +26,13 @@
 </div>
 
 <body class="font-sans antialiased">
+  @session('message')
+  <div class="bg-{{session('status_color')}}-100 border-l-4 border-{{session('status_color')}}-500 text-{{session('status_color')}}-700 p-4" role="alert">
+    <p class="font-bold">{{session('status')}}</p>
+    <p>{{session('message')}}</p>
+  </div>
+
+  @endsession
   {{ $slot }}
 </body>
 @isset($footer)
@@ -35,22 +41,3 @@
 </footer>
 @endisset
 </html>
-
-<script>
-  function adjustContentHeight() {
-    const navbar = document.querySelector('.main-nav'); // Replace 'nav' with the appropriate selector for your navbar
-    const navbarHeight = navbar ? navbar.offsetHeight : 0; // Get the navbar height, or set it to 0 if the navbar is not found
-
-    const dynamicStyles = document.getElementById('dynamic-styles');
-    dynamicStyles.innerHTML = `.centered-content { height: calc(100vh - ${navbarHeight}px); }`;
-    console.log(dynamicStyles.innerHTML);
-
-  }
-
-  // Call the function when the page loads
-  window.addEventListener('DOMContentLoaded', adjustContentHeight);
-
-  // Call the function when the window is resized (in case the navbar height changes dynamically)
-  window.addEventListener('resize', adjustContentHeight);
-
-</script>

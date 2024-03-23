@@ -17,9 +17,9 @@ class TaskFactory extends Factory
     public function definition(): array
     {
         return [
-            'task_description' => fake()->realText(200),
-            'task_pass' => fake()->regexify('[A-Za-z0-9]{20}'),
-            'user_id' => 3,
+            'task_title' => fake()->sentence(5),
+            'task_description' => fake()->realText(500),
+            'user_id' => 1,
         ];
     }
 }
