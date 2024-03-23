@@ -18,5 +18,6 @@
       </div>
       @endforeach
     </div>
+    {{$tasks->links()}}
   </div>
 </x-layout>

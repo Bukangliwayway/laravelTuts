@@ -9,6 +9,6 @@ class WelcomeToTheBlackParade extends Controller
     public function display()
     {
 
-        return view("display");
+        return view("welcome");
     }
 }

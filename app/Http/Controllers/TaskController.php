@@ -12,8 +12,9 @@ class TaskController extends Controller
      */
     public function index()
     {
-        $tasks = Task::query()->orderBy("created_at", "desc")->paginate(10);
-        // dd($tasks);
+        $tasks = Task::query()
+            ->where('user_id', request()->user()->id)
+            ->orderBy("created_at", "desc")->paginate(10);
         return view('task.index', ['tasks' => $tasks]);
     }
 
@@ -31,11 +32,9 @@ class TaskController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate(['task_description' => ['required', 'nullable'], 'task_title' => ['required', 'string']]);
-        $data['user_id'] = 1;
+        $data['user_id'] = $request->user()->id;
         $task = Task::create($data);
         return to_route('task.show', $task)
-            ->with('status', 'success')
-            ->with('status_color', 'green')
             ->with('message', 'Task saved successfully');
     }
 
@@ -44,6 +43,9 @@ class TaskController extends Controller
      */
     public function show(Task $task)
     {
+        if ($task->user_id !== request()->user()->id) {
+            abort(403);
+        }
         return view('task.show', ['task' => $task]);
     }
 
@@ -52,7 +54,9 @@ class TaskController extends Controller
      */
     public function edit(Task $task)
     {
-
+        if ($task->user_id !== request()->user()->id) {
+            abort(403);
+        }
         return view('task.edit', ['task' => $task]);
     }
 
@@ -64,8 +68,6 @@ class TaskController extends Controller
         $data = $request->validate(['task_description' => ['required', 'nullable'], 'task_title' => ['required', 'string']]);
         $task->update($data);
         return to_route('task.show', $task)
-            ->with('status', 'success')
-            ->with('status_color', 'green')
             ->with('message', 'Task edited successfully');
     }
 
@@ -74,10 +76,11 @@ class TaskController extends Controller
      */
     public function destroy(Task $task)
     {
+        if ($task->user_id !== request()->user()->id) {
+            abort(403);
+        }
         $task->delete();
         return to_route('task.index')
-            ->with('status', 'success')
-            ->with('status_color', 'green')
             ->with('message', 'Task Deleted successfully');
     }
 }

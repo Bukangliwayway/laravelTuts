@@ -10,6 +10,8 @@
   <link rel="preconnect" href="https://fonts.bunny.net" />
   <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
 </head>
+@include('layouts.navigation')
+
 <div class="flex bg-gray-800 text-white top-0 py-3 flex-wrap justify-around bg-silver items-center">
   <h1 class="text-lg uppercase font-bold">LaraTask</h1>
   <ul class="flex gap-[40px] text-m">
@@ -27,7 +29,7 @@
 
 <body class="font-sans antialiased">
   @session('message')
-  <div class="bg-{{session('status_color')}}-100 border-l-4 border-{{session('status_color')}}-500 text-{{session('status_color')}}-700 p-4" role="alert">
+  <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4" role="alert">
     <p class="font-bold">{{session('status')}}</p>
     <p>{{session('message')}}</p>
   </div>
