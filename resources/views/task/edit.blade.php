@@ -27,6 +27,7 @@
         {{$task->task_description}}
         </textarea>
       </div>
+    </form>
   </div>
 
 
